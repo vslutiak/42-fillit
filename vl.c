@@ -13,6 +13,25 @@
 #include "fillit.h"
 #include "stdio.h"
 
+int	ft_line(char *map)
+{
+	int col;
+	int i;
+
+	i = 0;
+	col = 0;
+	while (map[i])
+	{
+		if (map[i] != '\n')
+			col++;
+		if (map[i] != '\n' && map[i] != '.' && map[i] != '#')
+			return (0);
+		i++;
+	}
+	if (col % 16 == 0)
+		return (1);
+	return (0);
+}
 
 int	ft_valid(int len, char *map)
 {
@@ -44,6 +63,24 @@ int	ft_valid(int len, char *map)
 		i++;
 		b++;
 	}
+	i = 0;
+	b = 0;
+	count = 0;
+	while (i < len)
+	{
+		if (map[i] == '#')
+			count++;
+		if (b == 20)
+		{
+			if (coll != 4)
+				return (0);
+			b = 0;
+			count = 0;
+			i++;
+		}
+		i++;
+		b++;
+	}
 	return (1);
 }
 
@@ -57,7 +94,8 @@ int main(int argc, char const *argv[])
 	fd = open(argv[1], O_RDONLY);
 	len = read(fd, buffer, MAX);
 	buffer[len] = '\0';
-	map = ft_strsub(buffer, 0, len);
+	map = ft_strndup(buffer, len);
+	//printf("%s\n", map);
 	if (ft_valid(len, map) != 1)
 		write(2, "EROR", 4);
 	close(fd);
