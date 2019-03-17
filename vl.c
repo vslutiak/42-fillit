@@ -94,7 +94,7 @@ int main(int argc, char const *argv[])
 	fd = open(argv[1], O_RDONLY);
 	len = read(fd, buffer, MAX);
 	buffer[len] = '\0';
-	map = ft_strndup(buffer, len);
+	map = ft_strsub(buffer, 0, len);
 	//printf("%s\n", map);
 	if (ft_valid(len, map) != 1)
 		write(2, "EROR", 4);
