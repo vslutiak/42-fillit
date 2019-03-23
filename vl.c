@@ -17,14 +17,12 @@ int	ft_new_line(char *map, int len)
 {
 	int	i;
 	int	b;
-	int	count;
 
 	i = 4;
 	b = 0;
-	count = 0;
 	while (i < len)
 	{
-		while (++b < 3)
+		while (++b <= 3)
 			if (map[i] == '\n')
 				i += 5;
 			else
@@ -149,7 +147,9 @@ int	main(int argc, char const *argv[])
 	else if (ft_count(map, len) != 1)
 		write(2, "COUNT\n", 6);
 	else
-		write(2, "VALID", 5);
+		write(2, "VALID\n", 6);
+	ft_tream(map);
+	printf("%s", map);
 	close(fd);
 	return (1);
 }
