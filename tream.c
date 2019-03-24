@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   header.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vslutiak <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/11/12 18:02:46 by vslutiak          #+#    #+#             */
+/*   Updated: 2018/11/12 18:13:36 by vslutiak         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fillit.h"
 
 int		ft_len(char *map)
@@ -10,7 +22,7 @@ int		ft_len(char *map)
 	return (map - buffer);
 }
 
-int	ft_empty(char *map, int len, int str)
+int		ft_empty(char *map, int len, int str)
 {
 	while (*map && str--)
 	{
@@ -23,7 +35,7 @@ int	ft_empty(char *map, int len, int str)
 	return (1);
 }
 
-int	count_line(char *map)
+int		count_line(char *map)
 {
 	int		i;
 
@@ -39,47 +51,46 @@ int	count_line(char *map)
 	return (i);
 }
 
-void	del_emp(char *maps)
+void	del_emp(char *map)
 {
-	while (*maps)
-		if ((ft_strncmp(maps, "....\n", 5)) == 0)
-			ft_memmove(maps, maps + 5, ft_strlen(maps + 4));
+	while (*map)
+		if ((ft_strncmp(map, "....\n", 5)) == 0)
+			ft_memmove(map, map + 5, ft_strlen(map + 4));
 		else
-			++maps;
+			++map;
 }
 
-void	ft_del(char *maps, int len, int str)
+void	ft_del(char *map, int len, int str)
 {
-	while (str-- && ft_memmove(maps, maps + 1, ft_strlen(maps)))
-		maps += len;
+	while (str-- && ft_memmove(map, map + 1, ft_strlen(map)))
+		map += len;
 }
 
-void		ft_tream(char *maps)
+void	ft_tream(char *map)
 {
 	int		len;
 	int		str;
 	int		col;
-
-	del_emp(maps);
-	while (*maps)
+	
+	del_emp(map);
+	while (*map)
 	{
-		len = ft_len(maps);
-		str = count_line(maps);
+		len = ft_len(map);
+		str = count_line(map);
 		col = len;
 		while (col--)
 		{
-			if (ft_empty(maps, len, str))
+			if (ft_empty(map, len, str))
 			{
-				ft_del(maps, len, str);
+				ft_del(map, len, str);
 				--len;
 			}
-			if (ft_empty(maps + (len - 1), len, str))
+			if (ft_empty(map + (len - 1), len, str))
 			{
-				ft_del(maps + (len - 1), len, str);
+				ft_del(map + (len - 1), len, str);
 				--len;
 			}
 		}
-		maps += ((len + 1) * str) + 1;
+		map += ((len + 1) * str) + 1;
 	}
-	maps[ft_strlen(maps) - 1] = '\0';
 }

@@ -13,6 +13,7 @@ char 	*ft_rd(char *name);
 char	**ft_map(int n);
 char	**ft_alg(char *valid, char **map);
 void	ft_tream(char *map);
-
+char		ft_vl(int fd);
+int		count_line(char *map);
 
 #endif

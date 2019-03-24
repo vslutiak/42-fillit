@@ -13,7 +13,7 @@
 #include "fillit.h"
 #include "stdio.h"
 
-int	ft_new_line(char *map, int len)
+int		ft_new_line(char *map, int len)
 {
 	int	i;
 	int	b;
@@ -28,11 +28,11 @@ int	ft_new_line(char *map, int len)
 			else
 				return (0);
 		b = 0;
-		if (!((map[len - 1] == '\n' && map[len - 2] == '\n') &&
-			(map[len - 3] == '#' || map[len - 3] == '.')))
+		if (map[len - 1] ==  '\n' && map[len - 2] == '\n'
+			&& map[len -3] == '\n')
 			return (0);
 		if (map[i] == '\n' && map[i + 1] == '\n'
-			&& map[i + 2] == '\0' && i + 2 != len)
+			&& map[i + 2] == '\0')
 			return (0);
 		if (map[i] == '\n' && map[i + 1] == '\n')
 			i += 6;
@@ -44,7 +44,7 @@ int	ft_new_line(char *map, int len)
 	return (1);
 }
 
-int	ft_line(char *map)
+int		ft_line(char *map)
 {
 	int col;
 	int i;
@@ -64,7 +64,7 @@ int	ft_line(char *map)
 	return (0);
 }
 
-int	ft_valid(int len, char *map)
+int		ft_valid(int len, char *map)
 {
 	int	i;
 	int	b;
@@ -75,14 +75,10 @@ int	ft_valid(int len, char *map)
 	count = 0;
 	while (i < len && b <= 20)
 	{
-		if (map[i] == '#' && b > 1 && map[i - 1] == '#')
-			++count;
-		if (map[i] == '#' && b < 19 && map[i + 1] == '#')
-			++count;
-		if (map[i] == '#' && b > 5 && map[i - 5] == '#')
-			++count;
-		if (map[i] == '#' && b < 15 && map[i + 5] == '#')
-			++count;
+		(map[i] == '#' && b > 1 && map[i - 1] == '#') ? ++count : count;
+		(map[i] == '#' && b < 19 && map[i + 1] == '#') ? ++count : count;
+		(map[i] == '#' && b > 5 && map[i - 5] == '#') ? ++count : count;
+		(map[i] == '#' && b < 15 && map[i + 5] == '#') ? ++count : count;
 		if (b == 20)
 		{
 			if (count != 6 && count != 8)
@@ -97,7 +93,7 @@ int	ft_valid(int len, char *map)
 	return (1);
 }
 
-int	ft_count(char *map, int len)
+int		ft_count(char *map, int len)
 {
 	int i;
 	int b;
@@ -126,30 +122,22 @@ int	ft_count(char *map, int len)
 	return (1);
 }
 
-int	main(int argc, char const *argv[])
+char	ft_vl(int fd)
 {
 	int		len;
-	int		fd;
 	char	buffer[MAX + 1];
 	char	*map;
 
-	fd = open(argv[1], O_RDONLY);
 	len = read(fd, buffer, MAX);
 	buffer[len] = '\0';
 	map = ft_strsub(buffer, 0, len);
-	//printf("%s", map);
-	if (ft_valid(len, map) != 1)
-		write(2, "EROR\n", 5);
-	else if (ft_line(map) != 1)
-		write(2, "LINE\n", 5);
-	else if (ft_new_line(map, len) != 1)
-		write(2, "NEW\n", 4);
-	else if (ft_count(map, len) != 1)
-		write(2, "COUNT\n", 6);
-	else
-		write(2, "VALID\n", 6);
+	if (ft_valid(len, map) != 1 || ft_line(map) != 1
+		|| ft_new_line(map, len) != 1 || ft_count(map, len) != 1)
+	{
+		free(map);
+		write(2, "error\n", 5);
+		return (0);
+	}
 	ft_tream(map);
-	printf("%s", map);
-	close(fd);
-	return (1);
+	return (*map);
 }
